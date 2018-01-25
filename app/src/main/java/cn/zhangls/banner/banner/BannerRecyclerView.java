@@ -140,6 +140,18 @@ public final class BannerRecyclerView extends FrameLayout {
         mRecyclerView = new RecyclerView(context);
         new PagerSnapHelper().attachToRecyclerView(mRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                    if (currentIndex != manager.findFirstCompletelyVisibleItemPosition()) {
+                        currentIndex = manager.findFirstCompletelyVisibleItemPosition();
+                        refreshIndicator();
+                    }
+                }
+            }
+        });
         LayoutParams vpLayoutParams = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -181,6 +193,7 @@ public final class BannerRecyclerView extends FrameLayout {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_OUTSIDE:
                 setPlaying(true);
                 break;
             default:
@@ -216,7 +229,7 @@ public final class BannerRecyclerView extends FrameLayout {
      */
     private synchronized void refreshIndicator() {
         if (bannerSize > 1) {
-            indicatorAdapter.setPosition(currentIndex % bannerSize);
+            indicatorAdapter.setPosition(currentIndex);
             indicatorAdapter.notifyDataSetChanged();
         }
     }
@@ -287,7 +300,7 @@ public final class BannerRecyclerView extends FrameLayout {
         bannerSize = newList.size();
         if (bannerSize > 1) {
             indicatorView.setVisibility(VISIBLE);
-            currentIndex = Integer.MAX_VALUE / 2;
+            currentIndex = 0;
             mRecyclerView.scrollToPosition(currentIndex);
             bannerAdapter = new BannerAdapter(mRecyclerView.getContext(), newList, onItemClickListener);
             mRecyclerView.setAdapter(bannerAdapter);

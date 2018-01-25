@@ -40,7 +40,7 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerView
 
     @Override
     public void onBindViewHolder(BannerViewHolder holder, int position) {
-        String url = urlList.get(position % urlList.size());
+        String url = urlList.get(position);
         ImageView img = holder.imageView;
         Glide.with(context).load(url).into(img);
         img.setOnClickListener(v -> {

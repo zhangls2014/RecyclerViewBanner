@@ -20,8 +20,7 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("http://imgsrc.baidu.com/forum/pic/item/d4c907f3d7ca7bcbcf643fcabe096b63f724a804.jpg");
         arrayList.add("http://d.hiphotos.baidu.com/zhidao/pic/item/7c1ed21b0ef41bd5e6c559a057da81cb38db3dcb.jpg");
         arrayList.add("http://a.hiphotos.baidu.com/zhidao/pic/item/d52a2834349b033b5b349bfe16ce36d3d539bd51.jpg");
-        bannerRecyclerView.initBannerImageView(arrayList, (view, position) -> {
-            Toast.makeText(this, "====position=====" + position, Toast.LENGTH_SHORT).show();
-        });
+        bannerRecyclerView.initBannerImageView(arrayList, (view, position) ->
+                Toast.makeText(this, "====position=====" + position, Toast.LENGTH_SHORT).show());
     }
 }
